@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 from datetime import datetime, AmbiguousTimeError
 from django.conf import settings
 
+
+
 try:
     from django.utils import timezone
 
@@ -14,9 +16,9 @@ try:
                 try:
                     _localize = value.localize
                 except AttributeError:
-                    value = value.replace(tzinfo=value)
+                    value = value.replace(tzinfo=default_tz)
                 else:
-                    value = min(_localize(value, isdst=True), _localize(value, isdst=False))
+                    value = min(_localize(value, is_dst=True), _localize(value, is_dst=False))
         return value
 
     def make_naive(value):
