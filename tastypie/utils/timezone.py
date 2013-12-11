@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from datetime import datetime, localize, AmbiguousTimeError
+from datetime import datetime, AmbiguousTimeError
 from django.conf import settings
 
 try:
@@ -11,7 +11,12 @@ try:
             try:
                 value = timezone.make_aware(value, default_tz)
             except AmbiguousTimeError:
-                value = min(localize(value, isdst=True), localize(value, isdst=False))
+                try:
+                    _localize = value.localize
+                except AttributeError:
+                    value = value.replace(tzinfo=value)
+                else:
+                    value = min(_localize(value, isdst=True), _localize(value, isdst=False))
         return value
 
     def make_naive(value):
