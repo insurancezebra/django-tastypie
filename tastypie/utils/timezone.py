@@ -1,6 +1,10 @@
 from __future__ import unicode_literals
 import datetime
 from django.conf import settings
+try:
+    import pytz
+except ImportError:
+    pytz = None
 
 try:
     from django.utils import timezone
@@ -8,7 +12,10 @@ try:
     def make_aware(value):
         if getattr(settings, "USE_TZ", False) and timezone.is_naive(value):
             default_tz = timezone.get_default_timezone()
-            value = timezone.make_aware(value, default_tz)
+            try:
+                value = timezone.make_aware(value, default_tz)
+            except AmbiguousTimeError:
+                value = min(localize(value, isdst=True), localize(value, isdst=False))
         return value
 
     def make_naive(value):
