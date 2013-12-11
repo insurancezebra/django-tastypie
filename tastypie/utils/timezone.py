@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from datetime import datetime, AmbiguousTimeError
+from datetime import datetime, localize, AmbiguousTimeError
 from django.conf import settings
 
 try:
