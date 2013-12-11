@@ -17,7 +17,7 @@ try:
                 value = timezone.make_aware(value, default_tz)
             except AmbiguousTimeError:
                 try:
-                    _localize = value.localize
+                    _localize = default_tz.localize
                 except AttributeError:
                     value = value.replace(tzinfo=default_tz)
                 else:
