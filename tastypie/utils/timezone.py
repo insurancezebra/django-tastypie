@@ -1,10 +1,6 @@
 from __future__ import unicode_literals
-import datetime
+from datetime import datetime, AmbiguousTimeError
 from django.conf import settings
-try:
-    import pytz
-except ImportError:
-    pytz = None
 
 try:
     from django.utils import timezone
